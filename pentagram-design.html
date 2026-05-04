@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PENTAGRAM DESIGN — We Build Brands That Sell</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0B0B0B;
+    --red: #FF2A2A;
+    --red-dim: rgba(255,42,42,0.15);
+    --red-glow: rgba(255,42,42,0.35);
+    --white: #FFFFFF;
+    --gray: #1A1A1A;
+    --gray-mid: #2A2A2A;
+    --gray-text: #888888;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 60px;
+    backdrop-filter: blur(20px);
+    background: rgba(11,11,11,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 16px 60px; }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-text);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--red);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 10px 22px;
+    border: 1px solid var(--red);
+    color: var(--red);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover {
+    background: var(--red);
+    color: var(--white);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+
+  /* Hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span {
+    width: 24px; height: 1px;
+    background: var(--white);
+    transition: all 0.3s;
+    display: block;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-display);
+    font-size: 48px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--red); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 60px 80px;
+  }
+
+  /* Red glow blob */
+  #hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,42,42,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  /* Grid lines */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 1000px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title span { color: var(--red); }
+
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 2vw, 18px);
+    color: var(--gray-text);
+    letter-spacing: 3px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 48px;
+    background: var(--red);
+    color: var(--white);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    display: inline-block;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px var(--red-glow), 0 0 80px rgba(255,42,42,0.15);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 48px;
+    background: transparent;
+    color: var(--white);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-secondary:hover {
+    border-color: var(--white);
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .scroll-indicator span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gray-text);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(var(--red), transparent);
+    animation: scrollAnim 2s 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollAnim {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    50.01% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--red);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--white);
+    padding: 0 32px;
+  }
+  .marquee-track span.dot { color: rgba(255,255,255,0.5); padding: 0; }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--red);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    letter-spacing: 2px;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 64px;
+  }
+
+  /* Fade-in on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--gray); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 56px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--red);
+    transition: width 0.5s ease;
+  }
+  .service-card:hover::before { width: 100%; }
+  .service-card:hover { background: #111111; }
+
+  .service-icon {
+    width: 56px; height: 56px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .service-icon svg { width: 100%; height: 100%; }
+
+  .service-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--red);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .service-name {
+    font-family: var(--font-display);
+    font-size: 32px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+
+  .service-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray-text);
+    font-weight: 300;
+  }
+
+  .service-arrow {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: var(--red);
+    display: inline-block;
+    transition: transform 0.3s;
+  }
+  .service-card:hover .service-arrow { transform: translateX(8px); }
+
+  /* ── PORTFOLIO ── */
+  #portfolio { background: var(--black); }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .portfolio-item {
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .portfolio-bg {
+    width: 100%; height: 100%;
+    transition: transform 0.6s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 48px;
+    letter-spacing: 4px;
+  }
+
+  /* Each card unique style */
+  .p1 .portfolio-bg { background: #0f0f0f; color: var(--red); }
+  .p2 .portfolio-bg { background: #140a0a; color: #fff; }
+  .p3 .portfolio-bg { background: #0a0a14; color: var(--red); }
+  .p4 .portfolio-bg { background: #0a140a; color: #fff; }
+  .p5 .portfolio-bg { background: #14140a; color: var(--red); }
+  .p6 .portfolio-bg { background: #0f0f0f; color: #fff; }
+
+  .portfolio-item:hover .portfolio-bg { transform: scale(1.06); }
+
+  .portfolio-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,42,42,0.88);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+  .portfolio-overlay h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .portfolio-overlay p {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+
+  /* Portfolio visual elements */
+  .p1 .portfolio-bg::before { content: '◆'; font-size: 56px; }
+  .p2 .portfolio-bg::before { content: '⬡'; font-size: 64px; }
+  .p3 .portfolio-bg::before { content: '△'; font-size: 60px; }
+  .p4 .portfolio-bg::before { content: '○'; font-size: 68px; }
+  .p5 .portfolio-bg::before { content: '★'; font-size: 56px; }
+  .p6 .portfolio-bg::before { content: '⬟'; font-size: 60px; }
+
+  /* ── PRICING ── */
+  #pricing { background: var(--gray); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 64px;
+  }
+
+  .pricing-card {
+    background: var(--black);
+    padding: 56px 40px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-6px); }
+
+  .pricing-card.popular {
+    background: var(--red);
+    transform: translateY(-12px);
+  }
+  .pricing-card.popular:hover { transform: translateY(-18px); }
+
+  .popular-badge {
+    position: absolute;
+    top: -1px; right: 32px;
+    background: var(--white);
+    color: var(--red);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .pricing-tier {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-text);
+    margin-bottom: 24px;
+  }
+  .pricing-card.popular .pricing-tier { color: rgba(255,255,255,0.7); }
+
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 80px;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+  }
+  .pricing-price sup {
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 300;
+    vertical-align: top;
+    margin-top: 14px;
+    display: inline-block;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pricing-features li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 300;
+  }
+  .pricing-card.popular .pricing-features li { color: rgba(255,255,255,0.85); }
+  .pricing-features li::before {
+    content: '→';
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--red);
+  }
+  .pricing-card.popular .pricing-features li::before { color: var(--white); }
+
+  .btn-pricing {
+    display: block;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .btn-pricing:hover {
+    border-color: var(--red);
+    background: var(--red);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+  .pricing-card.popular .btn-pricing {
+    background: var(--white);
+    color: var(--red);
+    border-color: var(--white);
+  }
+  .pricing-card.popular .btn-pricing:hover {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+
+  .pricing-cta {
+    text-align: center;
+    padding: 64px;
+    background: var(--black);
+    border: 1px solid rgba(255,42,42,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255,42,42,0.08) 0%, transparent 100%);
+  }
+  .pricing-cta h3 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 48px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .pricing-cta p {
+    font-size: 14px;
+    color: var(--gray-text);
+    margin-bottom: 40px;
+    position: relative;
+    font-weight: 300;
+  }
+  .pricing-cta .btn-primary { position: relative; font-size: 14px; }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--black);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-left { position: relative; }
+
+  .about-visual {
+    aspect-ratio: 1;
+    background: var(--gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: clamp(60px, 8vw, 100px);
+    letter-spacing: 4px;
+    color: var(--red);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-visual::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(255,42,42,0.3);
+    animation: rotateSquare 20s linear infinite;
+  }
+  .about-visual::after {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border: 1px solid rgba(255,42,42,0.15);
+    animation: rotateSquare 20s linear infinite reverse;
+  }
+  @keyframes rotateSquare {
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
+  }
+
+  .about-text { }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 32px;
+  }
+
+  .about-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--gray-text);
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+  .about-body strong { color: var(--white); font-weight: 500; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: var(--red);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-text);
+    margin-top: 4px;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--gray);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,42,42,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .contact-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 8vw, 100px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 32px;
+  }
+  .contact-title span { color: var(--red); }
+
+  .contact-sub {
+    font-size: 15px;
+    color: var(--gray-text);
+    margin-bottom: 56px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gray-text);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    padding: 12px 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .contact-link:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .contact-link svg { width: 16px; height: 16px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .footer-logo span { color: var(--red); }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gray-text);
+    text-transform: uppercase;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .services-grid, .portfolio-grid, .pricing-grid { grid-template-columns: 1fr 1fr; }
+    #about { grid-template-columns: 1fr; gap: 60px; }
+    .about-visual { max-width: 400px; margin: 0 auto; }
+    .pricing-card.popular { transform: none; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+
+    section { padding: 80px 24px; }
+    #hero { padding: 100px 24px 80px; }
+
+    .services-grid, .portfolio-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-card.popular { transform: none; }
+
+    .about-stats { grid-template-columns: 1fr 1fr; }
+
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+
+    .contact-links { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">PENTA<span>GRAM</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Started</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#portfolio" class="mobile-link">Work</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">★ Creative Studio — Est. 2024</p>
+    <h1 class="hero-title">We Build Brands<br><span>That Sell</span></h1>
+    <p class="hero-subtitle">Logo&nbsp;&nbsp;•&nbsp;&nbsp;Branding&nbsp;&nbsp;•&nbsp;&nbsp;Social Media Design</p>
+    <div class="hero-buttons">
+      <a href="#pricing" class="btn-primary">Start Your Brand</a>
+      <a href="#portfolio" class="btn-secondary">View Work</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Brand Identity</span><span class="dot">✦</span>
+    <span>Logo Design</span><span class="dot">✦</span>
+    <span>Social Media</span><span class="dot">✦</span>
+    <span>Visual Strategy</span><span class="dot">✦</span>
+    <span>Brand Identity</span><span class="dot">✦</span>
+    <span>Logo Design</span><span class="dot">✦</span>
+    <span>Social Media</span><span class="dot">✦</span>
+    <span>Visual Strategy</span><span class="dot">✦</span>
+    <span>Brand Identity</span><span class="dot">✦</span>
+    <span>Logo Design</span><span class="dot">✦</span>
+    <span>Social Media</span><span class="dot">✦</span>
+    <span>Visual Strategy</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <p class="section-label">What We Do</p>
+    <h2 class="section-title">Our Services</h2>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="28,4 52,20 52,36 28,52 4,36 4,20" stroke="#FF2A2A" stroke-width="1.5" fill="none"/>
+          <polygon points="28,14 42,22 42,34 28,42 14,34 14,22" stroke="#FF2A2A" stroke-width="0.75" fill="none" opacity="0.4"/>
+          <circle cx="28" cy="28" r="5" fill="#FF2A2A"/>
+        </svg>
+      </div>
+      <span class="service-num">01</span>
+      <h3 class="service-name">Logo Design</h3>
+      <p class="service-desc">Distinctive, memorable logos crafted to represent your brand's identity and values at first glance.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="22" height="22" stroke="#FF2A2A" stroke-width="1.5" fill="none"/>
+          <rect x="30" y="4" width="22" height="22" stroke="#FF2A2A" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <rect x="4" y="30" width="22" height="22" stroke="#FF2A2A" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <rect x="30" y="30" width="22" height="22" stroke="#FF2A2A" stroke-width="1.5" fill="none"/>
+          <rect x="22" y="22" width="12" height="12" fill="#FF2A2A"/>
+        </svg>
+      </div>
+      <span class="service-num">02</span>
+      <h3 class="service-name">Brand Identity</h3>
+      <p class="service-desc">Complete visual systems — typography, color palettes, mockups — creating a cohesive brand experience.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="8" width="48" height="32" rx="3" stroke="#FF2A2A" stroke-width="1.5" fill="none"/>
+          <rect x="10" y="14" width="20" height="20" rx="1" stroke="#FF2A2A" stroke-width="0.75" fill="none" opacity="0.5"/>
+          <rect x="34" y="14" width="12" height="5" rx="1" fill="none" stroke="#FF2A2A" stroke-width="0.75" opacity="0.5"/>
+          <rect x="34" y="22" width="12" height="5" rx="1" fill="none" stroke="#FF2A2A" stroke-width="0.75" opacity="0.5"/>
+          <rect x="34" y="30" width="8" height="4" rx="1" fill="#FF2A2A" opacity="0.8"/>
+          <rect x="20" y="40" width="16" height="3" rx="1" fill="none" stroke="#FF2A2A" stroke-width="0.75" opacity="0.4"/>
+          <rect x="24" y="43" width="8" height="5" fill="none" stroke="#FF2A2A" stroke-width="0.75" opacity="0.4"/>
+        </svg>
+      </div>
+      <span class="service-num">03</span>
+      <h3 class="service-name">Social Media Design</h3>
+      <p class="service-desc">Scroll-stopping templates and graphics designed to attract attention and convert followers into clients.</p>
+      <span class="service-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="reveal">
+    <p class="section-label">Our Work</p>
+    <h2 class="section-title">Portfolio</h2>
+  </div>
+  <div class="portfolio-grid reveal">
+    <div class="portfolio-item p1">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>NEXUS</h3>
+        <p>Logo Design</p>
+      </div>
+    </div>
+    <div class="portfolio-item p2">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>VOLTA</h3>
+        <p>Brand Identity</p>
+      </div>
+    </div>
+    <div class="portfolio-item p3">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>APEX</h3>
+        <p>Logo Design</p>
+      </div>
+    </div>
+    <div class="portfolio-item p4">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>ONYX</h3>
+        <p>Social Media</p>
+      </div>
+    </div>
+    <div class="portfolio-item p5">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>LYRA</h3>
+        <p>Brand Identity</p>
+      </div>
+    </div>
+    <div class="portfolio-item p6">
+      <div class="portfolio-bg"></div>
+      <div class="portfolio-overlay">
+        <h3>FORGE</h3>
+        <p>Logo Design</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="reveal">
+    <p class="section-label">Investment</p>
+    <h2 class="section-title">Pricing</h2>
+  </div>
+  <div class="pricing-grid reveal">
+    <!-- Starter -->
+    <div class="pricing-card">
+      <p class="pricing-tier">Starter</p>
+      <div class="pricing-price"><sup>$</sup>25</div>
+      <ul class="pricing-features">
+        <li>Logo design (1 concept)</li>
+        <li>2 revision rounds</li>
+        <li>PNG + SVG files</li>
+        <li>48hr delivery</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Get Started</a>
+    </div>
+    <!-- Pro -->
+    <div class="pricing-card popular">
+      <div class="popular-badge">🔥 Most Popular</div>
+      <p class="pricing-tier">Pro</p>
+      <div class="pricing-price"><sup>$</sup>60</div>
+      <ul class="pricing-features">
+        <li>Logo design (3 concepts)</li>
+        <li>Full color palette</li>
+        <li>Brand mockups</li>
+        <li>Unlimited revisions</li>
+        <li>All file formats</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Get Started</a>
+    </div>
+    <!-- Premium -->
+    <div class="pricing-card">
+      <p class="pricing-tier">Premium</p>
+      <div class="pricing-price"><sup>$</sup>120</div>
+      <ul class="pricing-features">
+        <li>Everything in Pro</li>
+        <li>Full brand guidelines</li>
+        <li>Social media kit</li>
+        <li>10 social templates</li>
+        <li>Priority delivery</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Get Started</a>
+    </div>
+  </div>
+  <div class="pricing-cta reveal">
+    <h3>Ready to build something iconic?</h3>
+    <p>Slide into our DMs and let's make your brand unforgettable.</p>
+    <a href="#contact" class="btn-primary">DM NOW TO START 🔥</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left reveal">
+    <div class="about-visual">PG</div>
+  </div>
+  <div class="about-text reveal">
+    <p class="section-label">Who We Are</p>
+    <h2 class="about-title">Obsessed With<br>Your Brand.</h2>
+    <p class="about-body">We are a <strong>creative studio</strong> focused on building powerful brand identities that attract clients and grow businesses. Every pixel, every color, every line — crafted with intention.</p>
+    <p class="about-body">From ambitious startups to established businesses, we transform visions into <strong>visual identities that command attention</strong> and drive real results.</p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Brands Built</div>
+      </div>
+      <div>
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+      <div>
+        <div class="stat-num">5★</div>
+        <div class="stat-label">Avg Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <p class="section-label" style="justify-content:center">Get In Touch</p>
+      <h2 class="contact-title">Let's Build<br><span>Together.</span></h2>
+      <p class="contact-sub">Have a project in mind? Reach out and we'll get back to you within 24 hours to discuss how we can make your brand stand out.</p>
+      <div class="contact-links">
+        <a href="https://instagram.com/pentagramdesign" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          @pentagramdesign
+        </a>
+        <a href="mailto:hello@pentagramdesign.co" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+          hello@pentagramdesign.co
+        </a>
+      </div>
+      <a href="mailto:hello@pentagramdesign.co" class="btn-primary">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#hero" class="footer-logo">PENTA<span>GRAM</span></a>
+  <p class="footer-copy">© 2024 Pentagram Design — All rights reserved</p>
+  <p class="footer-copy" style="color:#444">Built with ♥ for brands</p>
+</footer>
+
+<script>
+  // NAV scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger children
+        entry.target.style.transitionDelay = '0s';
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger reveal for grids
+  document.querySelectorAll('.services-grid .service-card, .portfolio-grid .portfolio-item, .pricing-grid .pricing-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease, background 0.4s';
+    const childObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          }, (i % 3) * 120);
+          childObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    childObserver.observe(el);
+  });
+
+  // Parallax hero glow on mouse
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 30;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 30;
+    hero.style.setProperty('--mx', x + 'px');
+    hero.style.setProperty('--my', y + 'px');
+  });
+
+  // Smooth anchor scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
